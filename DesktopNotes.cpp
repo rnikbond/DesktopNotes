@@ -9,6 +9,10 @@ DesktopNotes::DesktopNotes(QWidget *parent) : QWidget(parent) , ui(new Ui::Deskt
 
     ui->setupUi( this );
 
+    ui->titleEdit->setPlaceholderText( tr("Заголовок заметки...") );
+    ui->noteEdit ->setPlaceholderText( tr("Здесь Вы можете написать подробности заметки...") );
+    ui->splitter ->setSizes( {200, 10} );
+
     connect( ui->createButton, &QToolButton::clicked           , this, &DesktopNotes::createNote        );
     connect( ui->deleteButton, &QToolButton::clicked           , this, &DesktopNotes::deleteNote        );
     connect( ui->notesList   , &QListWidget::currentItemChanged, this, &DesktopNotes::reactOnSelectNote );

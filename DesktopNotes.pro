@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -13,7 +13,8 @@ SOURCES += \
     DesktopNotes.cpp
 
 HEADERS += \
-    DesktopNotes.h
+    DesktopNotes.h \
+    SQL_const.h
 
 FORMS += \
     DesktopNotes.ui

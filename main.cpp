@@ -4,19 +4,11 @@
 #include <QMessageBox>
 #include <QApplication>
 //----------------------------
-#include "SQL_const.h"
+#include "SQL_query.h"
 #include "DesktopNotes.h"
 //----------------------------
 
-QString createTables(QSqlDatabase* dbase) {
-
-    QSqlQuery query( *dbase );
-    if( !query.exec(CREATE_TBL_NOTES_SQL) ) {
-        return query.lastError().text();
-    }
-
-    return QString();
-}
+QString createTables( QSqlDatabase* dbase );
 //-------------------------------------------------------------------------------------------
 
 int main(int argc, char *argv[])
@@ -40,9 +32,21 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    DesktopNotes w;
-    w.show();
+    DesktopNotes notes;
+    notes.init( &dbase );
+    notes.show();
+
     return a.exec();
 }
 //-------------------------------------------------------------------------------------------
 
+QString createTables( QSqlDatabase* dbase ) {
+
+    QSqlQuery query( *dbase );
+    if( !query.exec(queryCreateNotes()) ) {
+        return query.lastError().text();
+    }
+
+    return QString();
+}
+//-------------------------------------------------------------------------------------------

@@ -4,6 +4,7 @@
 //----------------------------
 #include <QtSql>
 #include <QWidget>
+#include <QSizeGrip>
 //----------------------------
 #include "Err.h"
 //----------------------------
@@ -26,6 +27,8 @@ class DesktopNotes : public QWidget {
     };
 
     QSqlDatabase* m_DBase;
+
+    QSizeGrip* m_ResizeGrip;
     Ui::DesktopNotes *ui;
 
 public:
@@ -63,6 +66,19 @@ private: // DataBase
     Err deleteNoteDB( const QString& uuid );
     Err changeTitleNoteDB( const QString& uuid, const QString& title );
     Err changeTextNoteDB ( const QString& uuid, const QString& text  );
+
+protected:
+
+    bool   m_IsMousePressed;
+    QPoint m_OldMousePos;
+
+    void updateGripPosition();
+
+    void mousePressEvent  ( QMouseEvent * event );
+    void mouseReleaseEvent( QMouseEvent * event );
+    void mouseMoveEvent   ( QMouseEvent * event );
+    void showEvent        ( QShowEvent  * event );
+    void resizeEvent      ( QResizeEvent* event );
 };
 //------------------------------------------------------------------------------------------
 

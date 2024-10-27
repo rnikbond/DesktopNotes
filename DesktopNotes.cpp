@@ -1,5 +1,6 @@
 //----------------------------
 #include <QUuid>
+#include <QMouseEvent>
 #include <QMessageBox>
 //----------------------------
 #include "SQL_query.h"
@@ -12,7 +13,18 @@ DesktopNotes::DesktopNotes(QWidget *parent) : QWidget(parent) , ui(new Ui::Deskt
 
     ui->setupUi( this );
 
-    m_DBase = nullptr;
+    setAttribute        ( Qt::WA_TranslucentBackground );
+    setMouseTracking    ( true );
+    setContextMenuPolicy( Qt::CustomContextMenu );
+    setWindowFlags( Qt::SubWindow );
+
+    m_DBase          = nullptr;
+    m_IsMousePressed = false;
+
+    m_ResizeGrip = new QSizeGrip( this );
+    m_ResizeGrip->setVisible( true );
+
+    updateGripPosition();
 
     ui->titleEdit->setPlaceholderText( tr("Заголовок заметки...") );
     ui->noteEdit ->setPlaceholderText( tr("Здесь Вы можете написать подробности заметки...") );
@@ -142,3 +154,63 @@ void DesktopNotes::showError( const QString& text ) {
 }
 //-------------------------------------------------------------------------------------------
 
+void DesktopNotes::updateGripPosition() {
+
+    QSize gripSize = m_ResizeGrip->size();
+    m_ResizeGrip->move( width () - gripSize.width(), height() - gripSize.height() );
+}
+//-------------------------------------------------------------------------------------------
+
+void DesktopNotes::mousePressEvent( QMouseEvent *event ) {
+
+    QWidget::mousePressEvent( event );
+
+    if( event->buttons() & Qt::MiddleButton ) {
+        close();
+        return;
+    }
+
+    m_IsMousePressed = true;
+    m_OldMousePos    = event->globalPos();
+
+    QApplication::setOverrideCursor( Qt::ClosedHandCursor );
+}
+//------------------------------------------------------------------------------
+
+void DesktopNotes::mouseReleaseEvent( QMouseEvent* event ) {
+
+    QWidget::mouseReleaseEvent( event );
+
+    m_IsMousePressed = false;
+    QApplication::restoreOverrideCursor();
+}
+//-----------------------------------------------------------------------------
+
+void DesktopNotes::mouseMoveEvent( QMouseEvent* event ) {
+
+    QWidget::mouseMoveEvent( event );
+
+    if( !m_IsMousePressed ) {
+        return;
+    }
+
+    const QPoint delta = event->globalPos() - m_OldMousePos;
+    move( x() + delta.x(), y() + delta.y() );
+
+    m_OldMousePos = event->globalPos();
+}
+//------------------------------------------------------------------------------
+
+void DesktopNotes::showEvent( QShowEvent* event ) {
+
+    updateGripPosition();
+    QWidget::showEvent( event );
+}
+//------------------------------------------------------------------------------
+
+void DesktopNotes::resizeEvent( QResizeEvent* event ) {
+
+    QWidget::resizeEvent( event );
+    updateGripPosition();
+}
+//------------------------------------------------------------------------------

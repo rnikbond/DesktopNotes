@@ -20,9 +20,11 @@ DesktopNotes::DesktopNotes(QWidget *parent) : QWidget(parent) , ui(new Ui::Deskt
 
     ui->titleEdit->setMaxLength( NOTES_FIELD_TITLE_LEN );
 
-    connect( ui->createButton, &QToolButton::clicked           , this, &DesktopNotes::createNote        );
-    connect( ui->deleteButton, &QToolButton::clicked           , this, &DesktopNotes::deleteNote        );
-    connect( ui->notesList   , &QListWidget::currentItemChanged, this, &DesktopNotes::reactOnSelectNote );
+    connect( ui->createButton, &QToolButton::clicked           , this, &DesktopNotes::createNote              );
+    connect( ui->deleteButton, &QToolButton::clicked           , this, &DesktopNotes::deleteNote              );
+    connect( ui->notesList   , &QListWidget::currentItemChanged, this, &DesktopNotes::reactOnSelectNote       );
+    connect( ui->titleEdit   , &QLineEdit  ::textChanged       , this, &DesktopNotes::reactOnTitleNoteChanged );
+    connect( ui->noteEdit    , &QTextEdit  ::textChanged       , this, &DesktopNotes::reactOnTextNoteChanged  );
 }
 //-------------------------------------------------------------------------------------------
 

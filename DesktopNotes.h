@@ -50,10 +50,19 @@ private: // List Widget
     QListWidgetItem* createNoteItem( const QString& uuid, const QString& title, const QString& text );
     void reactOnSelectNote( QListWidgetItem* item, QListWidgetItem* );
 
+private: // Edit
+
+    void showNoteInfo( QListWidgetItem* item );
+
+    void reactOnTitleNoteChanged();
+    void reactOnTextNoteChanged ();
+
 private: // DataBase
 
     Err createNoteDB( const QString& uuid, const QString& title, const QString& text );
     Err deleteNoteDB( const QString& uuid );
+    Err changeTitleNoteDB( const QString& uuid, const QString& title );
+    Err changeTextNoteDB ( const QString& uuid, const QString& text  );
 };
 //------------------------------------------------------------------------------------------
 

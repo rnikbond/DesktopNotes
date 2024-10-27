@@ -9,15 +9,7 @@
  */
 void DesktopNotes::reactOnSelectNote( QListWidgetItem* item, QListWidgetItem* ) {
 
-    ui->titleEdit->clear();
-    ui->noteEdit ->clear();
-
-    if( item == nullptr ) {
-        return;
-    }
-
-    ui->titleEdit->setText( item->data(Qt::DisplayRole).toString() );
-    ui->noteEdit ->setText( item->data(NoteRole       ).toString() );
+    showNoteInfo( item );
 }
 //-------------------------------------------------------------------------------------------
 
@@ -33,6 +25,7 @@ QListWidgetItem* DesktopNotes::createNoteItem( const QString& uuid, const QStrin
     QListWidgetItem* item = new QListWidgetItem( ui->notesList );
     item->setData( UuidRole       , uuid  );
     item->setData( NoteRole       , text  );
+    item->setData( Qt::ToolTipRole, text  );
     item->setData( Qt::DisplayRole, title );
 
     return item;

@@ -10,6 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     DesktopNotes_db.cpp \
+    DesktopNotes_edit.cpp \
     DesktopNotes_list.cpp \
     SQL_query.cpp \
     main.cpp \
